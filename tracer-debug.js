@@ -10,7 +10,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.log(line);
+      tracer.log(args, line);
     }
   };
 
@@ -18,7 +18,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.trace(line);
+      tracer.trace(args, line);
     }
   };
 
@@ -26,7 +26,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.debug(line);
+      tracer.debug(args, line);
     }
   };
 
@@ -34,7 +34,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.info(line);
+      tracer.info(args, line);
     }
   };
 
@@ -42,7 +42,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.warn(line);
+      tracer.warn(args, line);
     }
   };
 
@@ -50,12 +50,12 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.error(line);
+      tracer.error(args, line);
     }
   };
 };
 
 /**
-* @version 1.1.0
+* @version 1.1.1
 */
 module.exports = TLogger;
