@@ -17,7 +17,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(/(at .*)/i)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.log(line);
+      tracer.trace(line);
     }
   };
 
@@ -25,7 +25,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(/(at .*)/i)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.log(line);;
+      tracer.debug(line);
     }
   };
 
@@ -33,7 +33,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(/(at .*)/i)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.log(line);
+      tracer.info(line);
     }
   };
 
@@ -41,7 +41,7 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(/(at .*)/i)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.log(line);
+      tracer.warn(line);
     }
   };
 
@@ -49,12 +49,12 @@ function TLogger(options) {
     if (isDebug) {
       var line = new Error().stack.match(/(at .*)/i)[0];
       var args = Array.prototype.slice.call(arguments);
-      tracer.log(line);
+      tracer.error(line);
     }
   };
 };
 
 /**
-* @version 1.0.5
+* @version 1.0.6
 */
 module.exports = TLogger;
