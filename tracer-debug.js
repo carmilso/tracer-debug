@@ -3,11 +3,12 @@ var util = require('util');
 function TLogger(options) {
   var tracer = require('tracer').colorConsole(options);
   var env = process.env.NODE_ENV;
+  var re = new RegExp("at " + module.parent.filename + ":" + ".*");
   var isDebug = typeof env != 'undefined' && env != options.env //'production';
 
   this.log = function() {
     if (isDebug) {
-      var line = new Error().stack.match(/(at .*)/i)[0];
+      var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
       tracer.log(line);
     }
@@ -15,7 +16,7 @@ function TLogger(options) {
 
   this.trace = function() {
     if (isDebug) {
-      var line = new Error().stack.match(/(at .*)/i)[0];
+      var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
       tracer.trace(line);
     }
@@ -23,7 +24,7 @@ function TLogger(options) {
 
   this.debug = function() {
     if (isDebug) {
-      var line = new Error().stack.match(/(at .*)/i)[0];
+      var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
       tracer.debug(line);
     }
@@ -31,7 +32,7 @@ function TLogger(options) {
 
   this.info = function() {
     if (isDebug) {
-      var line = new Error().stack.match(/(at .*)/i)[0];
+      var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
       tracer.info(line);
     }
@@ -39,7 +40,7 @@ function TLogger(options) {
 
   this.warn = function() {
     if (isDebug) {
-      var line = new Error().stack.match(/(at .*)/i)[0];
+      var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
       tracer.warn(line);
     }
@@ -47,7 +48,7 @@ function TLogger(options) {
 
   this.error = function() {
     if (isDebug) {
-      var line = new Error().stack.match(/(at .*)/i)[0];
+      var line = new Error().stack.match(re)[0];
       var args = Array.prototype.slice.call(arguments);
       tracer.error(line);
     }
@@ -55,6 +56,6 @@ function TLogger(options) {
 };
 
 /**
-* @version 1.0.6
+* @version 1.1.0
 */
 module.exports = TLogger;
