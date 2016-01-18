@@ -5,7 +5,7 @@ var TLogger = require('./tracer-debug.js');
 var options = {
   format: "{{timestamp}} <{{title}}> {{message}}",
   dateformat: "HH:MM:ss.L",
-  env: 'production'
+  env: 'production'                                   // not debug when NODE_ENV=production
 }
 
 var tlogger = new TLogger(options);
