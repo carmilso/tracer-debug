@@ -17,5 +17,12 @@
     "logger"
   ],
   "author": "Carlos Millán Soler",
-  "license": "BSD-2-Clause"
+  "contributors": [{
+    "name": "Luis Leiva",
+    "url": "https://github.com/luileito/"
+  }],
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "tracer": "^0.8.2"
+  }
 }
