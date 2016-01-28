@@ -1,58 +1,52 @@
-var util = require('util');
-
 function TLogger(options) {
+
+  var util   = require('util');
   var tracer = require('tracer').colorConsole(options);
-  var env = process.env.NODE_ENV;
-  var re = new RegExp("at " + module.parent.filename + ":" + ".*");
-  var isDebug = typeof env != 'undefined' && env != options.env //'production';
+  // Display log messages as long as your program doesn't run in production.
+  var isDebug = process.env.NODE_ENV !== undefined &&
+                process.env.NODE_ENV !== 'production';
+
+  function output(fn, args) {
+    if (isDebug) {
+      // Cast arguments to their native type, for pretty ouput.
+      var _args = Array.prototype.slice.call(args).map(function(arg){
+        return util.inspect(arg);
+      });
+      if (options.stackTrace) {
+        var errStack = new Error().stack.split('\n');
+        // Remove the 2 top lines from error stack,
+        // in order to display the actual file and line number.
+        var line = '\n' + errStack.slice(3).join('\n');
+        _args.push(line);
+      }
+      fn.call(tracer, _args.join(' '));
+    }
+  };
 
   this.log = function() {
-    if (isDebug) {
-      var line = new Error().stack.match(re)[0];
-      var args = Array.prototype.slice.call(arguments);
-      tracer.log("%j %s \n", args, line);
-    }
+    output(tracer.log, arguments);
   };
 
   this.trace = function() {
-    if (isDebug) {
-      var line = new Error().stack.match(re)[0];
-      var args = Array.prototype.slice.call(arguments);
-      tracer.trace("%j %s \n", args, line);
-    }
+    output(tracer.trace, arguments);
   };
 
   this.debug = function() {
-    if (isDebug) {
-      var line = new Error().stack.match(re)[0];
-      var args = Array.prototype.slice.call(arguments);
-      tracer.debug("%j %s \n", args, line);
-    }
+    output(tracer.debug, arguments);
   };
 
   this.info = function() {
-    if (isDebug) {
-      var line = new Error().stack.match(re)[0];
-      var args = Array.prototype.slice.call(arguments);
-      tracer.info("%j %s \n", args, line);
-    }
+    output(tracer.info, arguments);
   };
 
   this.warn = function() {
-    if (isDebug) {
-      var line = new Error().stack.match(re)[0];
-      var args = Array.prototype.slice.call(arguments);
-      tracer.warn("%j %s \n", args, line);
-    }
+    output(tracer.warn, arguments);
   };
 
   this.error = function() {
-    if (isDebug) {
-      var line = new Error().stack.match(re)[0];
-      var args = Array.prototype.slice.call(arguments);
-      tracer.error("%j %s \n", args, line);
-    }
+    output(tracer.error, arguments);
   };
+
 };
 
 /**
