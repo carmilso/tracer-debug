@@ -1,6 +1,16 @@
 #!/usr/bin/env nodejs
 
-var TLogger = require('tracer-debug');
+// This is a simple usage example.
+
+var TLogger;
+try {
+  // NPM installs: use the node_modules file.
+  TLogger = require('tracer-debug');
+} catch(err) {
+  // Local test: use the local file.
+  TLogger = require('./tracer-debug');
+}
+
 var options = {
   format      : "{{timestamp}} <{{title}}> {{message}}",
   dateformat  : "HH:MM:ss.L",
