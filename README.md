@@ -10,10 +10,10 @@ If `stackTrace` is set to `true`, the error stack trace will be shown after the 
 
 ## Example
 
-Create the file `prove.js`:
+Do `npm install` and create the file `prove.js`:
 
 ```
-var TLogger = require('./tracer-debug/tracer-debug.js');
+var TLogger = require('tracer-debug');
 
 var options = {
   format      : "{{timestamp}} <{{title}}> {{message}}",
