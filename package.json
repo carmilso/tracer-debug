@@ -1,6 +1,6 @@
 {
   "name": "tracer-debug",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Logger to debug the program using the package 'tracer'",
   "main": "tracer-debug.js",
   "scripts": {
@@ -17,10 +17,12 @@
     "logger"
   ],
   "author": "Carlos Millán Soler",
-  "contributors": [{
-    "name": "Luis Leiva",
-    "url": "https://github.com/luileito/"
-  }],
+  "contributors": [
+    {
+      "name": "Luis Leiva",
+      "url": "https://github.com/luileito/"
+    }
+  ],
   "license": "BSD-2-Clause",
   "dependencies": {
     "tracer": "^0.8.2"
