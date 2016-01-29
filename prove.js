@@ -4,7 +4,7 @@ var TLogger = require('./tracer-debug.js');
 var options = {
   format      : "{{timestamp}} <{{title}}> {{message}}",
   dateformat  : "HH:MM:ss.L",
-  stackTrace  : false
+  stackTrace  : true 
 }
 
 var tlogger = new TLogger(options);
