@@ -1,18 +1,25 @@
 #!/usr/bin/env nodejs
 
 var TLogger = require('./tracer-debug.js');
-
 var options = {
-  format: "{{timestamp}} <{{title}}> {{message}}",
-  dateformat: "HH:MM:ss.L",
-  env: 'production'                                   // not debug when NODE_ENV=production
+  format      : "{{timestamp}} <{{title}}> {{message}}",
+  dateformat  : "HH:MM:ss.L",
+  stackTrace  : false
 }
 
 var tlogger = new TLogger(options);
 
-tlogger.log(0);
-tlogger.trace(1);
-tlogger.debug(2);
-tlogger.info(3);
-tlogger.warn(4);
-tlogger.error(5);
+tlogger.log(42);
+
+// Notice the stack trace.
+(function test() {
+  tlogger.trace('An object:', { foo: 1, bar: { a: 2, b: 3 } });
+})();
+
+tlogger.debug(true, false);
+
+tlogger.info(1/0, 0/0);
+
+tlogger.warn(null, undefined);
+
+tlogger.error("foo", typeof "bar");
