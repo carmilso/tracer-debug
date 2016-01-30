@@ -3,17 +3,19 @@
 This is a wrapper for [tracer](https://www.npmjs.com/package/tracer), a logging library for node.js.
 
 With `tracer-debug` all output is conveniently hidden when running in production environments.
+It only will be shown if `NODE_ENV` is set and is different from `production`.
 
 ## Options
+
 This program accepts the same options as `tracer`, plus the `stackTrace` property.
-If `stackTrace` is set to `true`, the error stack trace will be shown after the debug message.
+If `stackTrace` is set to `true` or `1`, the first line of the stack trace will be shown after the debug message. Different levels of verbosity are possible; e.g. if `stackTrace` is set to 2, the first two lines of the stack trace will be shown after the debug message; and so on.
 
 ## Example
 
-Create the file `prove.js`:
+Do `npm install` and create the file `prove.js`:
 
-```
-var TLogger = require('./tracer-debug/tracer-debug.js');
+```js
+var TLogger = require('tracer-debug');
 
 var options = {
   format      : "{{timestamp}} <{{title}}> {{message}}",
