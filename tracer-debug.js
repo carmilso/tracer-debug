@@ -1,3 +1,8 @@
+/**
+* Constructor.
+* @param options Configuration options. See https://www.npmjs.com/package/tracer for all the possibilities.
+* @param options.stackTrace {Boolean|Number} Display stack trace (default: false). Accepts different levels of verbosity; e.g. if stackTrace is 1 it will display the first line of the stack, if stackTrace is 2 it will display the 2 first lines of the stack, and so on.
+*/
 function TLogger(options) {
 
   var util   = require('util');
@@ -16,7 +21,13 @@ function TLogger(options) {
         var errStack = new Error().stack.split('\n');
         // Remove the 2 top lines from error stack,
         // in order to display the actual file and line number.
-        var line = '\n' + errStack.slice(3).join('\n');
+        var lines = errStack.slice(3);
+        // Allow different levels of verbosity.
+        // In this case, display only the first stack item.
+        if (options.stackTrace > 0)
+          lines = lines.slice(0, options.stackTrace);
+        // Finally join lines and display output.
+        var line = '\n' + lines.join('\n');
         _args.push(line);
       }
       fn.call(tracer, _args.join(' '));
