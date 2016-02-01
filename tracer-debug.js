@@ -4,9 +4,16 @@
 * @param options.stackTrace {Boolean|Number} Display stack trace (default: false). Accepts different levels of verbosity; e.g. if stackTrace is 1 it will display the first line of the stack, if stackTrace is 2 it will display the 2 first lines of the stack, and so on.
 */
 function TLogger(options) {
+  // Set default options, if not provided.
+  var extend = require('extend');
+  extend(options, {
+    format: "{{timestamp}} <{{title}}> {{message}}",
+    dateformat: "HH:MM:ss.L",
+    stackTrace: false
+  });
 
-  var util   = require('util');
   var tracer = require('tracer').colorConsole(options);
+  var util   = require('util');
   // Display log messages as long as your program doesn't run in production.
   var isDebug = process.env.NODE_ENV !== undefined &&
                 process.env.NODE_ENV !== 'production';
