@@ -3,7 +3,7 @@
 * @param options Configuration options. See https://www.npmjs.com/package/tracer for all the possibilities.
 * @param options.stackTrace {Boolean|Number} Display stack trace (default: false). Accepts different levels of verbosity; e.g. if stackTrace is 1 it will display the first line of the stack, if stackTrace is 2 it will display the 2 first lines of the stack, and so on.
 */
-function TLogger(options) {
+function TracerDebug(options) {
   // Set default options, if not provided.
   var extend = require('extend');
   extend(options, {
@@ -18,6 +18,7 @@ function TLogger(options) {
   var isDebug = process.env.NODE_ENV !== undefined &&
                 process.env.NODE_ENV !== 'production';
 
+  // Private generic output function.
   function output(fn, args) {
     if (isDebug) {
       // Cast arguments to their native type, for pretty ouput.
@@ -41,6 +42,7 @@ function TLogger(options) {
     }
   };
 
+  // Wrap built-in tracer logging methods.
   this.log = function() {
     output(tracer.log, arguments);
   };
@@ -70,4 +72,4 @@ function TLogger(options) {
 /**
 * @version 1.1.2
 */
-module.exports = TLogger;
+module.exports = TracerDebug;
