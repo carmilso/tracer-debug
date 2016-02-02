@@ -7,7 +7,7 @@ function TracerDebug(options) {
   // Set default options, if not provided.
   var extend = require('extend');
   extend(options, {
-    format: "{{timestamp}} <{{title}}> {{message}}",
+    format: "{{timestamp}} {{message}}",
     dateformat: "HH:MM:ss.L",
     stackTrace: false
   });
