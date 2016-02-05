@@ -6,11 +6,11 @@
 function TracerDebug(options) {
   // Set default options, if not provided.
   var extend = require('extend');
-  extend(options, {
+  extend({
     format: "{{timestamp}} {{message}}",
     dateformat: "HH:MM:ss.L",
     stackTrace: false
-  });
+  }, options);
 
   var tracer = require('tracer').colorConsole(options);
   var util   = require('util');
