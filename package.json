@@ -1,6 +1,6 @@
 {
   "name": "tracer-debug",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Logger to debug the program using the package 'tracer'",
   "main": "tracer-debug.js",
   "scripts": {
