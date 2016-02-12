@@ -7,38 +7,85 @@ It only will be shown if `NODE_ENV` is set and is different from `production`.
 
 ## Options
 
-This program accepts the same options as `tracer`, plus the `stackTrace` property.
-If `stackTrace` is set to `true` or `1`, the first line of the stack trace will be shown after the debug message. Different levels of verbosity are possible; e.g. if `stackTrace` is set to 2, the first two lines of the stack trace will be shown after the debug message; and so on.
+This program accepts the same options as `tracer` (see https://www.npmjs.com/package/tracer), plus the following ones:
+
+### `stackTrace`
+
+If `stackTrace` is set to `true` or `1`, the first line of the stack trace will be shown after the debug message. Different levels of verbosity are possible; e.g. if `stackTrace` is set to 2, the first two lines of the stack trace will be shown after the debug message; and so on. Examples:
+
+```js
+var TracerDebug = require('tracer-debug');
+
+// This will display the first line of the stack trace (from caller file).
+var myLogger = new TracerDebug({
+  stackTrace: true
+});
+
+// This will display the first 3 lines of the stack trace.
+var otherLogger = new TracerDebug({
+  stackTrace: 3
+});
+
+myLogger.log("hello");
+otherLogger.log("world");
+```
+
+### `inspectOptions`
+
+This option controls object inspection, as tracer-debug uses `utils.inspect` internally.
+
+```js
+var TracerDebug = require('tracer-debug');
+
+// The following are the default inspection options. You don't need to set them up explicitly.
+var myLogger = new TracerDebug({
+  inspectOptions: {
+    // If true, the output will display 'non-enumerable' properties.
+    showHidden: false,
+    // Nested object levels to recurse. Using null will show every level.
+    depth: null
+    // Colorize output? If true, the output will be styled with ANSI color codes.
+    colors: false,
+    // Custom inspect function. Handle with care.
+    customInspect: true
+  }
+});
+
+var otherLogger = new TracerDebug({
+  inspectOptions: { depth: 1 }
+});
+
+var sampleObj = { foo: { bar: { baz: { qux: 1 } } } };
+myLogger.log(sampleObj);
+anotherLogger.log(sampleObj);
+```
 
 ## Example
 
 Do `npm install` and create the file `prove.js`:
 
 ```js
-var TLogger = require('tracer-debug');
+var TracerDebug = require('tracer-debug');
 
-var options = {
-  format      : "{{timestamp}} <{{title}}> {{message}}",
-  dateformat  : "HH:MM:ss.L",
-  stackTrace  : true
-}
+var logger = new TracerDebug({
+  format: "<{{title}}> {{message}}",
+  stackTrace: true
+});
 
-var tlogger = new TLogger(options);
-
-tlogger.log(42);
+logger.log(42);
 
 // Notice the stack trace.
 (function test() {
-  tlogger.trace('An object:', { foo: 1, bar: { a: 2, b: 3 } });
+  logger.trace('An object:', { foo: 1, bar: { a: 2, b: 3 } });
 })();
 
-tlogger.debug(true, false);
+logger.debug(true, false);
 
-tlogger.info(1/0, 0/0);
+logger.info(1/0, 0/0);
 
-tlogger.warn(null, undefined);
+logger.warn(null, undefined);
 
-tlogger.error("foo", typeof "bar");
+logger.error("foo", typeof "bar");
 ```
 
 And then call it as `NODE_ENV=debug nodejs prove.js` or `NODE_ENV=development nodejs prove.js` to see the output.

@@ -6,12 +6,22 @@
 function TracerDebug(options) {
   // Set default options, if not provided.
   var extend = require('extend');
-  options = extend({
+  options = extend(true, {
+    // Tracer options begin here.
     format: "{{timestamp}} {{message}}",
     dateformat: "HH:MM:ss.L",
+    // TracerDebug options begin here.
+    inspectOptions: { 
+      // Display 'non-enumerable' properties.
+      showHidden: false, 
+      // Nested object levels to recurse. Using null will show every level.
+      depth: null 
+    },
+    // Whether to show the stack trace after displaying output. 
+    // Verbosity levels are possible (stackTrace > 0).
     stackTrace: false
   }, options);
-
+  // Now "decorate" the tracer package.
   var tracer = require('tracer').colorConsole(options);
   var util   = require('util');
   // Display log messages as long as your program doesn't run in production.
@@ -23,7 +33,7 @@ function TracerDebug(options) {
     if (isDebug) {
       // Cast arguments to their native type, for pretty ouput.
       var _args = Array.prototype.slice.call(args).map(function(arg){
-        return util.inspect(arg);
+        return util.inspect(arg, options.inspectOptions);
       });
       if (options.stackTrace) {
         var errStack = new Error().stack.split('\n');
