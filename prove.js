@@ -11,6 +11,8 @@ try {
   TracerDebug = require('./tracer-debug');
 }
 
+console.log("** BEGIN FILE:", process.argv.join(' '), "ENV:", process.env.NODE_ENV);
+
 // Just customize a couple of options.
 var logger = new TracerDebug({
   format: "logger/{{title}}: {{message}}",
@@ -32,3 +34,5 @@ logger.warn(null, undefined);
 
 var err = new Error("An error has been thrown.");
 logger.error(err.stack);
+
+console.log("** END OF FILE\n");

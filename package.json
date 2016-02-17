@@ -1,10 +1,10 @@
 {
   "name": "tracer-debug",
   "version": "1.3.0",
-  "description": "Logger to debug the program using the package 'tracer'",
+  "description": "A logging library for node.js built on top of 'tracer' package.",
   "main": "tracer-debug.js",
   "scripts": {
-    "test": "NODE_ENV=anything nodejs prove.js"
+    "test": "NODE_ENV=anything nodejs prove.js; NODE_ENV=production nodejs prove.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,7 @@
   ],
   "author": "Carlos Millán Soler",
   "contributors": [
-    {
-      "name": "luileito",
-      "url": "https://github.com/luileito/"
-    }
+    "luileito (https://github.com/luileito/)"
   ],
   "license": "BSD-2-Clause",
   "dependencies": {
