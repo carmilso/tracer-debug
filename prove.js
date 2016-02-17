@@ -13,7 +13,7 @@ try {
 
 // Just customize a couple of options.
 var logger = new TracerDebug({
-  format: "<{{title}}> {{message}}",
+  format: "logger/{{title}}: {{message}}",
   stackTrace: true
 });
 
@@ -30,4 +30,5 @@ logger.info(1/0, 0/0);
 
 logger.warn(null, undefined);
 
-logger.error("foo", typeof "bar");
+var err = new Error("An error has been thrown.");
+logger.error(err.stack);
