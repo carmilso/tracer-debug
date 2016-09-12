@@ -38,7 +38,9 @@ function TracerDebug(options) {
 
   // Private generic output function.
   function output(fn, args) {
-    if (!isDebug) return false;
+    if (!isDebug) {
+      return false;
+    }
     // Cast arguments to their native type, for pretty ouput.
     var _args = Array.prototype.slice.call(args).map(function(arg) {
       // Note: util.inspect is a stringification method,
@@ -53,8 +55,9 @@ function TracerDebug(options) {
       // in order to display the actual file and line number.
       var lines = errStack.slice(3);
       // Allow different levels of verbosity.
-      if (typeof options.stackTrace === 'number' && options.stackTrace > 0)
+      if (typeof options.stackTrace === 'number' && options.stackTrace > 0) {
         lines = lines.slice(0, options.stackTrace);
+      }
       // Finally join lines and display output, pretty-print wise.
       var line = '\n' + lines.join('\n').replace(/ +/, '--> ');
       _args.push(line);
