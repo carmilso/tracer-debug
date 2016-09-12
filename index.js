@@ -2,7 +2,7 @@
 * Constructor.
 * @param options Configuration options. See https://www.npmjs.com/package/tracer for all the possibilities.
 * @param options.displayWhen {Boolean} Condition to show output. If evaluated to false, no output messages will be shown.
-* @param options.stackTrace {Boolean|Number} Display stack trace (default: false). Accepts different levels of verbosity; e.g. stackTrace is 1 it will display the first line of the stack, if stackTrace is 2 it will display the 2 first lines of the stack, and so on.
+* @param options.stackTrace {Boolean|Number} Display stack trace (default: false). Accepts different levels of verbosity; e.g. stackTrace is 1 it will display the first line of the stack, if stackTrace is 2 it will display the 2 first lines of the stack, and so on. If stackTrace is true, the *complete* stack trace will be reported.
 * @param options.inspectOptions {Object} Inspection options. See https://nodejs.org/api/util.html#util_util_inspect_object_options
 */
 function TracerDebug(options) {
@@ -38,30 +38,28 @@ function TracerDebug(options) {
 
   // Private generic output function.
   function output(fn, args) {
-    if (isDebug) {
-      // Cast arguments to their native type, for pretty ouput.
-      var _args = Array.prototype.slice.call(args).map(function(arg) {
-        // Note: util.inspect is a stringification method,
-        // so use it for complex args only.
-        return typeof arg === 'object'
-                ? util.inspect(arg, options.inspectOptions)
-                : arg;
-      });
-      if (options.stackTrace) {
-        var errStack = new Error().stack.split('\n');
-        // Remove the 2 top lines from error stack,
-        // in order to display the actual file and line number.
-        var lines = errStack.slice(3);
-        // Allow different levels of verbosity.
-        // In this case, display only the first stack item.
-        if (options.stackTrace > 0)
-          lines = lines.slice(0, options.stackTrace);
-        // Finally join lines and display output, pretty-print wise.
-        var line = '\n' + lines.join('\n').replace(/ +/, '--> ');
-        _args.push(line);
-      }
-      fn.call(tracer, _args.join(' '));
+    if (!isDebug) return false;
+    // Cast arguments to their native type, for pretty ouput.
+    var _args = Array.prototype.slice.call(args).map(function(arg) {
+      // Note: util.inspect is a stringification method,
+      // so use it for complex args only.
+      return typeof arg === 'object'
+              ? util.inspect(arg, options.inspectOptions)
+              : arg;
+    });
+    if (options.stackTrace) {
+      var errStack = new Error().stack.split('\n');
+      // Remove the 2 top lines from error stack,
+      // in order to display the actual file and line number.
+      var lines = errStack.slice(3);
+      // Allow different levels of verbosity.
+      if (typeof options.stackTrace === 'number' && options.stackTrace > 0)
+        lines = lines.slice(0, options.stackTrace);
+      // Finally join lines and display output, pretty-print wise.
+      var line = '\n' + lines.join('\n').replace(/ +/, '--> ');
+      _args.push(line);
     }
+    fn.call(tracer, _args.join(' '));
   };
 
   // Wrap built-in tracer logging methods.
