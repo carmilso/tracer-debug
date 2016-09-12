@@ -42,12 +42,12 @@ By default, all messages are not shown when running in production, i.e. `display
 
 ### `stackTrace`
 
-If `stackTrace` is set to `true` or `1`, the first line of the stack trace will be shown after the output message. Different levels of verbosity are possible; e.g. if `stackTrace` is set to `2`, the first two lines of the stack trace will be shown after the output message; and so on. Examples:
+If `stackTrace` is set to `true`, the full stack trace will be shown. Different levels of verbosity are possible, e.g. if `stackTrace` is set to `1`, the first line of the stack trace will be shown after the output message; if `stackTrace` is set to `2`, the first two lines of the stack trace will be shown after the output message; and so on. Examples:
 
 ```js
 var TracerDebug = require('tracer-debug');
 
-// This will display the first line of the stack trace (from caller file).
+// This will display the full stack trace (from caller file).
 var myLogger = new TracerDebug({
   stackTrace: true
 });
@@ -93,7 +93,7 @@ anotherLogger.log(sampleObj);
 
 ## Example
 
-Do `npm install` and create the file `prove.js`:
+Do `npm install` and create the file `test.js`:
 
 ```js
 var TracerDebug = require('tracer-debug');
@@ -120,5 +120,5 @@ var err = new Error("An error has been thrown.");
 logger.error(err.stack);
 ```
 
-And then call it as `NODE_ENV=debug nodejs prove.js` or `NODE_ENV=development nodejs prove.js` to see the output.
-Notice that if you call it as `NODE_ENV=production nodejs prove.js` or simply `nodejs prove.js` no output is shown.
+And then call it as `NODE_ENV=debug nodejs test.js` or `NODE_ENV=development nodejs test.js` to see the output.
+Notice that if you call it as `NODE_ENV=production nodejs test.js` or simply `nodejs test.js` no output is shown.
