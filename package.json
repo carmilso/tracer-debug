@@ -1,6 +1,6 @@
 {
   "name": "tracer-debug",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "A logging library for node.js built on top of 'tracer' package.",
   "main": "index.js",
   "scripts": {
