@@ -11,8 +11,6 @@ function TracerDebug(options) {
   var extend = require('extend');
   options = extend(true, {
     // Tracer options begin here.
-    format: "{{timestamp}} {{message}}",
-    dateformat: "HH:MM:ss.L",
     // TracerDebug options begin here.
     // Custom condition for output to be shown.
     // Default: display messages if not running in production.
