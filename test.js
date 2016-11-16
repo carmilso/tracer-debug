@@ -15,8 +15,10 @@ console.log("** BEGIN TEST:", process.argv.join(' '), "ENV:", process.env.NODE_E
 
 // Just customize a couple of options.
 var logger = new TracerDebug({
+  // Display function name (title) and actual output (message).
   format: "logger/{{title}}: {{message}}",
-  stackTrace: true
+  // Display last 2 lines from stack.
+  stackTrace: 2
 });
 
 logger.log(42);

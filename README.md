@@ -61,36 +61,6 @@ myLogger.log("hello");
 otherLogger.log("world");
 ```
 
-### `inspectOptions`
-
-This option controls object inspection, as tracer-debug uses `utils.inspect` internally. Examples:
-
-```js
-var TracerDebug = require('tracer-debug');
-
-// The following are the default inspection options. You don't need to set them up explicitly.
-var myLogger = new TracerDebug({
-  inspectOptions: {
-    // If true, the output will display 'non-enumerable' properties.
-    showHidden: false,
-    // Nested object levels to recurse. Using null will show every level.
-    depth: null
-    // Colorize output? If true, the output will be styled with ANSI color codes.
-    colors: false,
-    // Custom inspect function. Handle with care.
-    customInspect: true
-  }
-});
-
-var otherLogger = new TracerDebug({
-  inspectOptions: { depth: 1 }
-});
-
-var sampleObj = { foo: { bar: { baz: { qux: 1 } } } };
-myLogger.log(sampleObj);
-anotherLogger.log(sampleObj);
-```
-
 ## Example
 
 Do `npm install` and create the file `test.js`:
