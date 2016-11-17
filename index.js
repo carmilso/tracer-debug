@@ -52,6 +52,7 @@ function TracerDebug(options) {
     if (!isDebug) {
       return false;
     }
+
     // Cast arguments to their native type, for pretty ouput.
     var _args = Array.prototype.slice.call(args).map(function(arg) {
       // Note: util.inspect is a stringification method,
@@ -60,6 +61,9 @@ function TracerDebug(options) {
               ? util.inspect(arg, options.inspectOpt)
               : arg;
     });
+
+    var output = util.format.apply(fn, _args);
+
     if (options.stackTrace) {
       var errStack = new Error().stack.split('\n');
       // Remove the 2 top lines from error stack,
@@ -71,9 +75,10 @@ function TracerDebug(options) {
       }
       // Finally join lines and display output, pretty-print wise.
       var line = '\n' + lines.join('\n').replace(/ +/, '--> ');
-      _args.push(line);
+      output += line;
     }
-    fn.call(tracer, _args.join(' '));
+
+    fn.call(tracer, output);
   };
 
   /**

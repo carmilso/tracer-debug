@@ -37,4 +37,6 @@ logger.warn(null, undefined);
 var err = new Error("An error has been thrown.");
 logger.error(err.stack);
 
+logger.log('hello %s! %j', 'world', { foo: 1 });
+
 console.log("\n** END OF TEST");
