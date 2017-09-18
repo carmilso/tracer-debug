@@ -80,14 +80,16 @@ logger.log(42);
   logger.trace('An object:', { foo: 1, bar: { a: 2, b: 3 } });
 })();
 
+// The following examples are just to show the colored output.
 logger.debug(true, false);
-
 logger.info(1/0, 0/0);
-
 logger.warn(null, undefined);
+logger.error(new Error("An error has been thrown."));
 
-var err = new Error("An error has been thrown.");
-logger.error(err.stack);
+// Let's manipulate the original tracer instance.
+logger.transport.setLevel('warn');
+logger.log('This message should not be shown!');
+logger.warn('hello %s! %j', 'world', { foo: 1 });
 ```
 
 And then call it as `NODE_ENV=debug nodejs test.js` or `NODE_ENV=development nodejs test.js` to see the output.

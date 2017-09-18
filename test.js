@@ -28,14 +28,11 @@ logger.log(42);
   logger.trace('An object:', { foo: 1, bar: { a: 2, b: 3 } });
 })();
 
+// The following examples are just to show the colored output.
 logger.debug(true, false);
-
 logger.info(1/0, 0/0);
-
 logger.warn(null, undefined);
-
-var err = new Error("An error has been thrown.");
-logger.error(err);
+logger.error(new Error("An error has been thrown."));
 
 // Let's manipulate the original tracer instance.
 logger.transport.setLevel('warn');
