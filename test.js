@@ -1,6 +1,8 @@
 #!/usr/bin/env nodejs
 
 // This is a simple usage example.
+console.log("** BEGIN TEST:", process.argv.join(' '), "ENV:", process.env.NODE_ENV, "\n");
+
 
 var TracerDebug;
 try {
@@ -10,8 +12,6 @@ try {
   // Local test: use the local file.
   TracerDebug = require('./index');
 }
-
-console.log("** BEGIN TEST:", process.argv.join(' '), "ENV:", process.env.NODE_ENV, "\n");
 
 // Just customize a couple of options.
 var logger = new TracerDebug({
@@ -35,8 +35,12 @@ logger.info(1/0, 0/0);
 logger.warn(null, undefined);
 
 var err = new Error("An error has been thrown.");
-logger.error(err.stack);
+logger.error(err);
 
-logger.log('hello %s! %j', 'world', { foo: 1 });
+// Let's manipulate the original tracer instance.
+logger.transport.setLevel('warn');
+logger.log('This message should not be shown!');
+logger.warn('hello %s! %j', 'world', { foo: 1 });
+
 
 console.log("\n** END OF TEST");

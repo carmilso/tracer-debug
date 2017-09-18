@@ -2,7 +2,7 @@
 
 This program is basically a wrapper for [tracer](https://www.npmjs.com/package/tracer), a logging library for node.js.
 
-With `tracer-debug` all output can be conveniently hidden at will, e.g. when running in production environments. For instance, you can choose to display output when `NODE_ENV` is different from `production`.
+With `tracer-debug` all output can be conveniently hidden at will, e.g. when running in production environments. For instance, you can choose to display output when `NODE_ENV` is set and is different from `production` (default behavior).
 
 Different configuration options are available, although you'll be (hopefully) ok with the default ones:
 
@@ -91,4 +91,4 @@ logger.error(err.stack);
 ```
 
 And then call it as `NODE_ENV=debug nodejs test.js` or `NODE_ENV=development nodejs test.js` to see the output.
-Notice that if you call it as `NODE_ENV=production nodejs test.js` or simply `nodejs test.js` no output is shown.
+Notice that if you call it as `NODE_ENV=production nodejs test.js` or simply `nodejs test.js`, no output is shown.

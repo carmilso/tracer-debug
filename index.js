@@ -1,30 +1,43 @@
 /**
  * Constructor.
+ * Creates a TracerDebug instance, which is a wrapper of a Tracer instance.
  * @class
+ *
  * @author Carlos Millán (Sciling, SL)
  * @author Luis Leiva (Sciling, SL)
- * @param {Object}          options             Configuration options.
- * See https://www.npmjs.com/package/tracer for all the possibilities.
- * @param {Boolean}         options.displayWhen Condition to show output.
+ *
+ * @param {Object} options Configuration options.
+ * See {@link https://www.npmjs.com/package/tracer} for all the possibilities.
+ *
+ * @param {Boolean} [options.displayWhen] Condition to show output.
  * If evaluated to false, no output messages will be shown.
- * @param {Boolean|Number}  options.stackTrace  Display stack trace (default: `false`).
- * Accepts different levels of verbosity; e.g. stackTrace is `1` it will display the first line of the stack,
+ * By default, output is shown only when an environment (NODE_ENV) is set and is not "production", i.e.,
+ * when `process.env.NODE_ENV !== undefined && process.env.NODE_ENV !== 'production'`.
+ *
+ * @param {Boolean|Number} [options.stackTrace] Display stack trace (default: `false`).
+ * This property also accepts different levels of verbosity; e.g.
+ * if stackTrace is `1` it will display the first line of the stack,
  * if stackTrace is `2` it will display the 2 first lines of the stack, and so on.
  * If stackTrace is `true`, the *complete* stack trace will be reported.
- * Notice that this stack is just the stack of the caller function and not an error stack.
+ * Notice that this stack is just the stack of the caller function and not an actual error stack.
+ *
  * @example
  * // Instantiate the class.
  * var logger = new TracerDebug();
- * // Displays "hello" 42.
+ * // Displays `hello 42`.
  * logger.log("hello", 42);
  * // Displays an actual error stack.
  * var err = new Error("An error has been thrown.");
- * logger.error(err.stack);
-*/
+ * logger.error(err);
+ */
 function TracerDebug(options) {
 
+  var tracer = require('tracer')
+    , util   = require('util')
+    , extend = require('extend')
+    ;
+
   // Set default options, if not provided.
-  var extend = require('extend');
   options = extend(true, {
     // Tracer options begin here.
     inspectOpt: {
@@ -34,6 +47,7 @@ function TracerDebug(options) {
     // TracerDebug options begin here.
     // Custom condition for output to be shown.
     // Default: display messages if not running in production.
+    // By default, debug messages will appear when explicitly running in whatever dev environment.
     displayWhen: process.env.NODE_ENV !== undefined &&
                  process.env.NODE_ENV !== 'production',
     // Whether to show the stack trace after displaying each output message.
@@ -41,28 +55,27 @@ function TracerDebug(options) {
     stackTrace: false
   }, options);
 
-  // Now "decorate" the tracer package.
-  var tracer = require('tracer').colorConsole(options);
-  var util   = require('util');
+  var transport = tracer.colorConsole(options);
+
   // Display log messages as long as the displayWhen option holds true.
+  // This includes truthy conditions as well.
   var isDebug = options.displayWhen == true;
 
   // Private generic output function.
-  function output(fn, args) {
+  function output(fn) {
     if (!isDebug) {
       return false;
     }
-
     // Cast arguments to their native type, for pretty ouput.
-    var _args = Array.prototype.slice.call(args).map(function(arg) {
+    var args = Array.prototype.slice.call(arguments, 1).map(function(arg) {
       // Note: util.inspect is a stringification method,
       // so use it for complex args only.
       return typeof arg === 'object'
-              ? util.inspect(arg, options.inspectOpt)
-              : arg;
+             ? util.inspect(arg, options.inspectOpt)
+             : arg;
     });
 
-    var output = util.format.apply(fn, _args);
+    var output = util.format.apply(fn, args);
 
     if (options.stackTrace) {
       var errStack = new Error().stack.split('\n');
@@ -78,56 +91,21 @@ function TracerDebug(options) {
       output += line;
     }
 
-    fn.call(tracer, output);
+    fn.call(transport, output);
   };
 
-  /**
-   * Wrapper of `tracer.log()` method.
-   * @type {string}
-   */
-  this.log = function() {
-    output(tracer.log, arguments);
-  };
+  // Now "decorate" the transport methods.
+  for (var method in transport) {
+    if (typeof transport[method] === 'function') {
+      this[method] = output.bind(this, transport[method]);
+    }
+  }
 
   /**
-   * Wrapper of `tracer.trace()` method.
-   * @type {string}
+   * Tracer instance.
+   * @return {object}
    */
-  this.trace = function() {
-    output(tracer.trace, arguments);
-  };
-
-  /**
-   * Wrapper of `tracer.debug()` method.
-   * @type {string}
-   */
-  this.debug = function() {
-    output(tracer.debug, arguments);
-  };
-
-  /**
-   * Wrapper of `tracer.info()` method.
-   * @type {string}
-   */
-  this.info = function() {
-    output(tracer.info, arguments);
-  };
-
-  /**
-   * Wrapper of `tracer.warn()` method.
-   * @type {string}
-   */
-  this.warn = function() {
-    output(tracer.warn, arguments);
-  };
-
-  /**
-   * Wrapper of `tracer.error()` method.
-   * @type {string}
-   */
-  this.error = function() {
-    output(tracer.error, arguments);
-  };
+  this.transport = tracer;
 
 };
 
