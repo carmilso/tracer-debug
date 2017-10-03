@@ -8,6 +8,10 @@
  *
  * @param {Object} options Configuration options.
  * See {@link https://www.npmjs.com/package/tracer} for all the possibilities.
+ * TracerDebug supports all Tracer options, plus the following ones.
+ *
+ * @param {Boolean} [options.inspectOpt] Inspect options (default: `{ depth: null }`).
+ * See {@link https://nodejs.org/api/util.html#util_util_inspect_object_options}
  *
  * @param {Boolean} [options.displayWhen] Condition to show output.
  * If evaluated to false, no output messages will be shown.
@@ -21,10 +25,13 @@
  * If stackTrace is `true`, the *complete* stack trace will be reported.
  * Notice that this stack is just the stack of the caller function and not an actual error stack.
  *
+ * @param {Boolean} [options.singleton] Whether the instance is global or not (default: `false`).
+ * See {@link https://nodejs.org/api/util.html#util_util_inspect_object_options}
+ *
  * @example
  * // Instantiate the class.
  * var logger = new TracerDebug();
- * // Displays `hello 42`.
+ * // Displays `hello 42` if NODE_ENV is set and is not "production".
  * logger.log("hello", 42);
  * // Displays an actual error stack.
  * var err = new Error("An error has been thrown.");

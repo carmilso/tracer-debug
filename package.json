@@ -4,7 +4,8 @@
   "description": "A logging library for node.js built on top of 'tracer' package.",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=anything nodejs test.js; NODE_ENV=production nodejs test.js"
+    "test": "NODE_ENV=anything nodejs test.js; NODE_ENV=production nodejs test.js",
+    "docs": "jsdoc -c jsdoc.json index.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   "dependencies": {
     "extend": "^3.0.0",
     "tracer": "^0.8.2"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.5.5"
   }
 }
