@@ -18,7 +18,8 @@ var logger = new TracerDebug({
   // Display function name (title) and actual output (message).
   format: "logger/{{title}}: {{message}}",
   // Display last 2 lines from stack.
-  stackTrace: 2
+  stackTrace: 2,
+  singleton: true
 });
 
 logger.log(42);
@@ -39,5 +40,8 @@ logger.transport.setLevel('warn');
 logger.log('This message should not be shown!');
 logger.warn('hello %s! %j', 'world', { foo: 1 });
 
+var logger2 = new TracerDebug({ singleton: true });
+// Notice that the output is the same as in the previous `logger` instance.
+logger2.log(42);
 
 console.log("\n** END OF TEST");

@@ -52,8 +52,17 @@ function TracerDebug(options) {
                  process.env.NODE_ENV !== 'production',
     // Whether to show the stack trace after displaying each output message.
     // Verbosity levels are possible (stackTrace > 0).
-    stackTrace: false
+    stackTrace: false,
+    // Whether the instance is global or not.
+    // If true, only one TracerDebug instance will be used across your app.
+    // This is useful e.g. for unit testing, as it allows to spy on a common instance.
+    singleton: false,
   }, options);
+
+  // Exit early if a previous instance already exists.
+  if (options.singleton && global['tracer-debug']) {
+    return global['tracer-debug'];
+  }
 
   var transport = tracer.colorConsole(options);
 
@@ -106,6 +115,11 @@ function TracerDebug(options) {
    * @return {object}
    */
   this.transport = tracer;
+
+  // In singleton mode, initialize instance.
+  if (options.singleton && !global['tracer-debug']) {
+    global['tracer-debug'] = this;
+  }
 
 };
 

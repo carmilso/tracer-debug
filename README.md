@@ -70,7 +70,8 @@ var TracerDebug = require('tracer-debug');
 
 var logger = new TracerDebug({
   format: "logger/{{title}}: {{message}}",
-  stackTrace: true
+  stackTrace: true,
+  singleton: true
 });
 
 logger.log(42);
@@ -90,6 +91,10 @@ logger.error(new Error("An error has been thrown."));
 logger.transport.setLevel('warn');
 logger.log('This message should not be shown!');
 logger.warn('hello %s! %j', 'world', { foo: 1 });
+
+var logger2 = new TracerDebug({ singleton: true });
+// Notice that the output is the same as in the previous `logger` instance.
+logger2.log(42);
 ```
 
 And then call it as `NODE_ENV=debug nodejs test.js` or `NODE_ENV=development nodejs test.js` to see the output.
