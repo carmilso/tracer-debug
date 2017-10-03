@@ -76,12 +76,18 @@ var logger = new TracerDebug({
 
 logger.log(42);
 
+// In singleton mode, the output is the same as in the previous `logger` instance.
+// If we don't use `singleton: true` a brand new instance is created.
+var logger2 = new TracerDebug({ singleton: true });
+logger2.log(42);
+
 // Notice the stack trace.
 (function test() {
   logger.trace('An object:', { foo: 1, bar: { a: 2, b: 3 } });
 })();
 
 // The following examples are just to show the colored output.
+// It also showcases how native types are displayed.
 logger.debug(true, false);
 logger.info(1/0, 0/0);
 logger.warn(null, undefined);
@@ -91,10 +97,8 @@ logger.error(new Error("An error has been thrown."));
 logger.transport.setLevel('warn');
 logger.log('This message should not be shown!');
 logger.warn('hello %s! %j', 'world', { foo: 1 });
-
-var logger2 = new TracerDebug({ singleton: true });
-// Notice that the output is the same as in the previous `logger` instance.
-logger2.log(42);
+// Notice that in singleton mode any modification is populated to other instances.
+logger2.log('This message should not be shown!');
 ```
 
 And then call it as `NODE_ENV=debug nodejs test.js` or `NODE_ENV=development nodejs test.js` to see the output.
