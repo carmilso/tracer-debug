@@ -1,10 +1,11 @@
 /**
  * Constructor.
- * Creates a TracerDebug instance, which is a wrapper of a Tracer instance.
+ * Creates a `TracerDebug` instance, which is sort of a wrapper of a `Tracer` instance.
  * @class
  *
  * @author Carlos Millán (Sciling, SL)
  * @author Luis Leiva (Sciling, SL)
+ * @license MIT
  *
  * @param {Object} options Configuration options.
  * See {@link https://www.npmjs.com/package/tracer} for all the possibilities.
@@ -118,7 +119,8 @@ function TracerDebug(options) {
   }
 
   /**
-   * Tracer instance.
+   * Access the original tracer instance.
+   * This is useful to manipulate non-logging methods, such as `setLevel()`.
    * @return {object}
    */
   this.transport = tracer;
